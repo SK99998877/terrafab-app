@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"/>
+<meta name="theme-color" content="#0F6E56"/>
+<title>Terrafab Organics</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.31.0/dist/tabler-icons.min.css"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+html,body{height:100%;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f0f4f2;color:#1a1a1a;overflow:hidden;}
+.app{height:100dvh;display:flex;flex-direction:column;max-width:430px;margin:0 auto;background:#f0f4f2;}
+#sLogin{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:28px;background:#f0f4f2;}
+.logo-wrap{width:76px;height:76px;background:#0F6E56;border-radius:20px;display:flex;align-items:center;justify-content:center;margin-bottom:16px;box-shadow:0 4px 16px rgba(15,110,86,.3);}
+.app-title{font-size:24px;font-weight:800;color:#0F6E56;margin-bottom:4px;}
+.app-sub{font-size:13px;color:#888;margin-bottom:32px;}
+.login-card{background:#fff;border-radius:20px;padding:24px;width:100%;box-shadow:0 2px 20px rgba(0,0,0,.08);}
+.lbl{font-size:11px;font-weight:700;color:#999;letter-spacing:.06em;text-transform:uppercase;display:block;margin-bottom:6px;margin-top:14px;}
+.lbl:first-child{margin-top:0;}
+.inp,select{width:100%;font-size:15px;padding:12px 14px;border:1.5px solid #e8e8e0;border-radius:12px;background:#fff;color:#1a1a1a;outline:none;-webkit-appearance:none;font-family:inherit;transition:border-color .2s;}
+.inp:focus,select:focus{border-color:#0F6E56;}
+.err{font-size:12px;color:#E24B4A;margin-top:6px;display:none;}
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:14px;border:none;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;transition:opacity .15s, transform .1s;}
+.btn:active{transform:scale(.98);}
+.btn-green{background:#0F6E56;color:#fff;}
+.btn-red{background:#E24B4A;color:#fff;}
+.btn-blue{background:#185FA5;color:#fff;}
+.btn-gray{background:#888;color:#fff;}
+.btn-outline{background:#fff;color:#0F6E56;border:1.5px solid #0F6E56;}
+#sMain{display:none;flex-direction:column;height:100dvh;overflow:hidden;}
+.topbar{background:#fff;border-bottom:1px solid #eaeae4;padding:10px 16px;display:flex;align-items:center;gap:10px;flex-shrink:0;}
+.t-logo{width:38px;height:38px;background:#0F6E56;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.t-brand b{font-size:15px;font-weight:800;color:#0F6E56;}
+.t-brand small{font-size:9px;color:#aaa;letter-spacing:.07em;display:block;margin-top:-2px;}
+.t-right{margin-left:auto;display:flex;align-items:center;gap:10px;}
+.sync-dot{width:8px;height:8px;border-radius:50%;background:#ccc;transition:background .3s;}
+.sync-dot.ok{background:#0F6E56;}
+.sync-dot.busy{background:#f59e0b;animation:blink 1s infinite;}
+.sync-dot.err{background:#E24B4A;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:.3;}}
+.avatar{width:32px;height:32px;border-radius:50%;background:#0F6E56;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:#fff;letter-spacing:.03em;}
+.bnav{background:#fff;border-top:1px solid #eaeae4;display:flex;flex-shrink:0;padding-bottom:env(safe-area-inset-bottom);}
+.nb{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:9px 0;border:none;background:transparent;cursor:pointer;color:#bbb;font-size:9px;font-weight:600;letter-spacing:.04em;font-family:inherit;transition:color .15s;}
+.nb.on{color:#0F6E56;}
+.nb i{font-size:22px;}
+.tab{flex:1;overflow-y:auto;overflow-x:hidden;padding:14px;display:none;-webkit-overflow-scrolling:touch;}
+.tab.on{display:block;}
+.card{background:#fff;border-radius:16px;padding:16px;margin-bottom:12px;box-shadow:0 1px 6px rgba(0,0,0,.05);}
+.sec{font-size:10px;font-weight:800;color:#bbb;text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px;}
+.mgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;}
+.met{background:#fff;border-radius:14px;padding:14px;box-shadow:0 1px 6px rgba(0,0,0,.05);}
+.met-label{font-size:11px;color:#aaa;margin-bottom:4px;}
+.met-val{font-size:22px;font-weight:800;color:#1a1a1a;line-height:1.1;}
+.met-sub{font-size:11px;margin-top:3px;}
+.col-green{color:#0F6E56;}
+.col-red{color:#E24B4A;}
+.col-amber{color:#BA7517;}
+.gbar-row{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+.gbar-lbl{font-size:12px;width:62px;flex-shrink:0;color:#555;}
+.gbar-track{flex:1;background:#f0f0ec;border-radius:99px;height:7px;overflow:hidden;}
+.gbar-fill{height:100%;border-radius:99px;background:#0F6E56;transition:width .4s;}
+.gbar-pct{font-size:11px;color:#aaa;width:32px;text-align:right;}
+.pl-row{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid #f5f5f0;font-size:13px;}
+.pl-row:last-child{border-bottom:none;}
+.pl-lbl{color:#888;}
+.pl-val{font-weight:700;}
+.badge{display:inline-block;font-size:11px;padding:3px 9px;border-radius:99px;font-weight:700;}
+.b-paid{background:#E1F5EE;color:#085041;}
+.b-partial{background:#FAEEDA;color:#633806;}
+.b-unpaid{background:#FCEBEB;color:#501313;}
+.cust-row{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid #f5f5f0;cursor:pointer;}
+.cust-row:last-child{border-bottom:none;}
+.cust-av{width:40px;height:40px;border-radius:50%;background:#E1F5EE;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#085041;flex-shrink:0;}
+.cust-name{font-size:14px;font-weight:700;color:#1a1a1a;}
+.cust-meta{font-size:11px;color:#aaa;margin-top:2px;}
+.led-row{display:flex;align-items:flex-start;gap:12px;padding:13px 0;border-bottom:1px solid #f5f5f0;}
+.led-row:last-child{border-bottom:none;}
+.led-av{width:40px;height:40px;border-radius:50%;background:#E1F5EE;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#085041;flex-shrink:0;}
+.led-info{flex:1;min-width:0;}
+.led-name{font-size:14px;font-weight:700;color:#1a1a1a;}
+.led-meta{font-size:11px;color:#aaa;margin-top:2px;}
+.led-tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px;}
+.itag{font-size:11px;background:#f0f4f2;padding:3px 8px;border-radius:6px;color:#555;}
+.led-btns{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap;}
+.ab{font-size:12px;padding:6px 11px;border-radius:9px;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:4px;border:1.5px solid #e0e0e0;background:#fff;color:#1a1a1a;font-weight:600;transition:opacity .15s;}
+.ab:active{opacity:.7;}
+.ab-green{border-color:#0F6E56;color:#0F6E56;}
+.ab-blue{border-color:#185FA5;color:#185FA5;}
+.ab-red{border-color:#E24B4A;color:#E24B4A;}
+.ab-purple{border-color:#534AB7;color:#534AB7;}
+.led-amt{text-align:right;flex-shrink:0;}
+.led-total{font-size:14px;font-weight:800;color:#1a1a1a;}
+.led-due{font-size:12px;color:#E24B4A;font-weight:600;margin-top:2px;}
+.item-block{background:#f9faf8;border-radius:12px;padding:13px;margin-bottom:8px;border:1.5px solid #eaeae4;}
+.item-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
+.item-head span{font-size:13px;font-weight:700;color:#555;}
+.r2{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.r3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;}
+.divider{border:none;border-top:1px solid #eaeae4;margin:14px 0;}
+.add-row-btn{width:100%;background:#fff;border:1.5px dashed #c8d5ce;border-radius:12px;padding:11px;font-size:14px;color:#0F6E56;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:6px;font-weight:600;}
+.infobox{background:#E1F5EE;border-radius:10px;padding:11px 13px;font-size:13px;color:#085041;line-height:1.6;margin-top:8px;display:none;}
+.srch{width:100%;padding:10px 14px 10px 38px;border:1.5px solid #e8e8e0;border-radius:12px;font-size:14px;background:#fff;outline:none;-webkit-appearance:none;margin-bottom:12px;font-family:inherit;transition:border-color .2s;}
+.srch:focus{border-color:#0F6E56;}
+.srch-wrap{position:relative;}
+.srch-icon{position:absolute;left:11px;top:50%;transform:translateY(-50%);color:#aaa;font-size:17px;pointer-events:none;margin-top:-6px;}
+.calc-box{background:#0F6E56;border-radius:12px;padding:12px 14px;margin-top:10px;color:#fff;}
+.calc-row{display:flex;justify-content:space-between;font-size:13px;padding:3px 0;}
+.calc-total{display:flex;justify-content:space-between;font-size:16px;font-weight:800;padding-top:8px;margin-top:6px;border-top:1px solid rgba(255,255,255,.25);}
+.alert-row{display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px solid #f5f5f0;}
+.alert-row:last-child{border-bottom:none;}
+.alert-ico{width:38px;height:38px;border-radius:50%;background:#FCEBEB;display:flex;align-items:center;justify-content:center;color:#A32D2D;font-size:19px;flex-shrink:0;}
+.mbg{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.5);display:none;align-items:flex-end;justify-content:center;z-index:9999;}
+.mbg.on{display:flex;}
+.modal{background:#fff;border-radius:22px 22px 0 0;padding:22px;width:100%;max-width:430px;max-height:88vh;overflow-y:auto;}
+.modal h3{font-size:17px;font-weight:800;margin-bottom:16px;}
+.modal .lbl{margin-top:14px;}
+.modal .lbl:first-child{margin-top:0;}
+.m-btns{display:flex;gap:8px;margin-top:16px;}
+.m-btns button{flex:1;padding:13px;border:none;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;}
+.m-ok{background:#0F6E56;color:#fff;}
+.m-cancel{background:#f5f5f0;color:#555;}
+.h-item{padding:10px 0;border-bottom:1px solid #f5f5f0;font-size:13px;}
+.h-item:last-child{border-bottom:none;}
+.h-date{color:#aaa;font-size:11px;margin-bottom:4px;}
+.kv-row{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid #f5f5f0;font-size:13px;}
+.kv-row:last-child{border-bottom:none;}
+.kv-lbl{color:#888;}
+.empty{font-size:13px;color:#ccc;text-align:center;padding:28px 0;}
+.toast{position:fixed;bottom:84px;left:50%;transform:translateX(-50%);background:#1a1a1a;color:#fff;padding:10px 22px;border-radius:99px;font-size:13px;font-weight:700;z-index:99999;opacity:0;transition:opacity .3s;pointer-events:none;white-space:nowrap;}
+.toast.on{opacity:1;}
+.irow{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid #f5f5f0;font-size:13px;}
+.irow:last-child{border-bottom:none;}
+.rbtn{background:none;border:none;cursor:pointer;color:#E24B4A;padding:0;font-size:12px;font-family:inherit;display:flex;align-items:center;gap:3px;font-weight:600;}
+/* Firebase status banner */
+.fb-banner{background:#E1F5EE;border-radius:10px;padding:10px 13px;font-size:12px;color:#085041;line-height:1.7;margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+.fb-banner.err{background:#FCEBEB;color:#501313;}
+</style>
+</head>
+<body>
+<div class="app">
+
+<!-- LOGIN -->
+<div id="sLogin">
+  <div class="logo-wrap">
+    <svg width="44" height="44" viewBox="0 0 44 44" fill="none">
+      <path d="M22 6C12 13 12 24 22 37 32 24 32 13 22 6z" fill="rgba(255,255,255,.25)"/>
+      <path d="M22 12C15 17 15 25 22 32 29 25 29 17 22 12z" fill="rgba(255,255,255,.45)"/>
+      <line x1="22" y1="17" x2="22" y2="30" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/>
+      <polyline points="17,26 22,31 27,26" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </div>
+  <div class="app-title">Terrafab Organics</div>
+  <div class="app-sub">Makhana Business Manager</div>
+  <div class="login-card">
+    <label class="lbl">User Select Karo</label>
+    <select id="uSel" class="inp">
+      <option value="">-- Select --</option>
+      <option value="Hussain">E. Hussain (Owner)</option>
+      <option value="Subham">Subham (Partner)</option>
+    </select>
+    <label class="lbl">Password</label>
+    <input type="password" id="pInp" class="inp" placeholder="Password daalo" onkeydown="if(event.key==='Enter')doLogin()"/>
+    <div class="err" id="lErr">✕ Galat password!</div>
+    <button class="btn btn-green" onclick="doLogin()" style="margin-top:14px;">Login <i class="ti ti-arrow-right"></i></button>
+  </div>
+</div>
+
+<!-- MAIN APP -->
+<div id="sMain">
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="t-logo">
+      <svg width="22" height="22" viewBox="0 0 44 44" fill="none">
+        <path d="M22 6C12 13 12 24 22 37 32 24 32 13 22 6z" fill="rgba(255,255,255,.25)"/>
+        <path d="M22 12C15 17 15 25 22 32 29 25 29 17 22 12z" fill="rgba(255,255,255,.45)"/>
+        <line x1="22" y1="17" x2="22" y2="30" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/>
+        <polyline points="17,26 22,31 27,26" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <div class="t-brand"><b>Terrafab</b><small>ORGANICS</small></div>
+    <div class="t-right">
+      <div class="sync-dot" id="sdot"></div>
+      <span style="font-size:11px;color:#aaa;" id="uLbl"></span>
+      <div class="avatar" id="uAv">EH</div>
+    </div>
+  </div>
+
+  <!-- TAB: DASHBOARD -->
+  <div class="tab on" id="tDash">
+    <div class="fb-banner" id="fbBanner"><i class="ti ti-wifi" style="font-size:16px;"></i> Firebase se connect ho raha hai...</div>
+    <div class="mgrid">
+      <div class="met"><div class="met-label">Total Sale</div><div class="met-val" id="mS">₹0</div><div class="met-sub col-green" id="mSSub">0 entries</div></div>
+      <div class="met"><div class="met-label">Payment Mila</div><div class="met-val" id="mR">₹0</div><div class="met-sub col-green">Collected</div></div>
+      <div class="met"><div class="met-label">Dues / Baki</div><div class="met-val" id="mD">₹0</div><div class="met-sub col-red" id="mDSub">0 dealers</div></div>
+      <div class="met"><div class="met-label">Collection %</div><div class="met-val" id="mP">0%</div><div class="met-sub col-green">Recovery</div></div>
+    </div>
+    <div class="card">
+      <div class="sec">Grade-wise Sales</div>
+      <div id="gBars"><div class="empty">Koi data nahi.</div></div>
+    </div>
+    <div class="card">
+      <div class="sec">P&amp;L Summary</div>
+      <div class="pl-row"><span class="pl-lbl">Kul Bikri (Total Sale)</span><span class="pl-val col-green" id="plS">₹0</span></div>
+      <div class="pl-row"><span class="pl-lbl">Payment Mila (Received)</span><span class="pl-val col-green" id="plR">₹0</span></div>
+      <div class="pl-row"><span class="pl-lbl">Baki Bacha (Dues)</span><span class="pl-val col-red" id="plD">₹0</span></div>
+      <div class="pl-row" style="margin-top:4px;border-top:2px solid #f0f0ec;padding-top:10px;">
+        <span style="font-weight:800;font-size:14px;">Net Collected</span>
+        <span class="pl-val col-green" style="font-size:18px;" id="plN">₹0</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="sec">Dues — Baki Wale</div>
+      <div id="dashDues"><div class="empty">Koi dues nahi! Sab clear.</div></div>
+    </div>
+  </div>
+
+  <!-- TAB: CUSTOMERS -->
+  <div class="tab" id="tCust">
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+        <div class="sec" style="margin:0;">Customers</div>
+        <button class="ab ab-green" onclick="openM('mNewCust')"><i class="ti ti-plus"></i> Naya</button>
+      </div>
+      <div class="srch-wrap">
+        <i class="ti ti-search srch-icon"></i>
+        <input class="srch" type="text" id="custSrch" placeholder="Customer dhundho..." oninput="renderCusts()"/>
+      </div>
+      <div id="custList"><div class="empty">Koi customer nahi.</div></div>
+    </div>
+  </div>
+
+  <!-- TAB: NEW SALE -->
+  <div class="tab" id="tNew">
+    <div class="card">
+      <div class="sec">Naya Sale Entry</div>
+      <label class="lbl" style="margin-top:0;">Purana Customer Select Karo</label>
+      <select class="inp" id="fCust" onchange="onCustSel()">
+        <option value="">-- Select karo --</option>
+      </select>
+      <div class="infobox" id="custInfoBox"></div>
+      <div style="text-align:center;color:#ccc;font-size:12px;margin:12px 0;">— ya naya naam likho —</div>
+      <label class="lbl" style="margin-top:0;">Shop / Customer Naam *</label>
+      <input type="text" class="inp" id="fShop" placeholder="Naam likho..."/>
+      <div class="r2" style="margin-top:8px;">
+        <div>
+          <label class="lbl" style="margin-top:0;">Owner Naam</label>
+          <input type="text" class="inp" id="fOwner" placeholder="e.g. Saqib"/>
+        </div>
+        <div>
+          <label class="lbl" style="margin-top:0;">Mobile</label>
+          <input type="tel" class="inp" id="fMob" placeholder="9876543210" inputmode="numeric"/>
+        </div>
+      </div>
+      <div class="divider"></div>
+      <div class="sec">Makhana Items</div>
+      <div id="iCont"></div>
+      <button class="add-row-btn" onclick="addRow()"><i class="ti ti-plus"></i> Aur Grade Add Karo</button>
+      <div class="calc-box" id="calcBox" style="display:none;">
+        <div class="calc-row"><span>Kul Sale</span><span id="calcSale">₹0</span></div>
+        <div class="calc-row"><span>Payment Mila</span><span id="calcPay">₹0</span></div>
+        <div class="calc-total"><span>Baki</span><span id="calcDue">₹0</span></div>
+      </div>
+      <div class="divider"></div>
+      <label class="lbl" style="margin-top:0;">Date</label>
+      <input type="date" class="inp" id="fDate"/>
+      <label class="lbl">Payment Mila (₹)</label>
+      <input type="number" class="inp" id="fPay" placeholder="0" min="0" inputmode="numeric" oninput="updateCalc()"/>
+      <button class="btn btn-green" onclick="saveEntry()" style="margin-top:14px;"><i class="ti ti-device-floppy"></i> Entry Save Karo</button>
+    </div>
+  </div>
+
+  <!-- TAB: LEDGER -->
+  <div class="tab" id="tLed">
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+        <div class="sec" style="margin:0;">Sabke Records</div>
+        <div style="display:flex;gap:6px;">
+          <button class="ab ab-blue" onclick="exportCSV()"><i class="ti ti-table-export"></i> CSV</button>
+          <button class="ab ab-green" onclick="exportPDF()"><i class="ti ti-file-type-pdf"></i> PDF</button>
+        </div>
+      </div>
+      <div class="srch-wrap">
+        <i class="ti ti-search srch-icon"></i>
+        <input class="srch" type="text" id="ledSrch" placeholder="Search..." oninput="renderLedger()"/>
+      </div>
+      <div id="ledList"><div class="empty">Koi entry nahi.</div></div>
+    </div>
+  </div>
+
+  <!-- TAB: SETTINGS -->
+  <div class="tab" id="tSet">
+    <div class="card" style="border:1.5px solid #B5D4F4;">
+      <div class="sec" style="color:#185FA5;">🔥 Firebase Sync</div>
+      <div class="irow"><span style="color:#888;">Status</span><span id="syncStat" style="font-weight:700;color:#aaa;">Connecting...</span></div>
+      <div class="irow"><span style="color:#888;">Last Update</span><span id="syncTime" style="color:#aaa;">-</span></div>
+      <div style="background:#EEF6FF;border-radius:10px;padding:11px;font-size:12px;color:#185FA5;line-height:1.7;margin-top:10px;">🔥 Firebase real-time sync chal raha hai — koi bhi entry karo, dono ko turant dikhai dega. Koi button dabaane ki zaroorat nahi!</div>
+    </div>
+    <div class="card">
+      <div class="sec">Grade Manage Karo</div>
+      <div style="display:flex;gap:8px;margin-bottom:10px;">
+        <input type="text" class="inp" id="newGrade" placeholder="Naya grade naam..." style="flex:1;"/>
+        <button class="ab ab-green" onclick="addGrade()"><i class="ti ti-plus"></i> Add</button>
+      </div>
+      <div id="gradeList"></div>
+    </div>
+    <div class="card">
+      <div class="sec">Account</div>
+      <div class="irow"><span style="color:#888;">Logged in as</span><span style="font-weight:700;" id="setUser">-</span></div>
+      <button class="btn btn-red" onclick="doLogout()" style="margin-top:10px;"><i class="ti ti-logout"></i> Logout</button>
+    </div>
+    <div class="card">
+      <div class="sec" style="color:#E24B4A;">Danger Zone</div>
+      <button class="btn btn-red" onclick="clearData()"><i class="ti ti-trash"></i> Sabka Data Delete Karo</button>
+    </div>
+  </div>
+
+  <!-- BOTTOM NAV -->
+  <div class="bnav">
+    <button class="nb on" id="n0" onclick="goTab(0)"><i class="ti ti-layout-dashboard"></i>Dashboard</button>
+    <button class="nb" id="n1" onclick="goTab(1)"><i class="ti ti-users"></i>Customers</button>
+    <button class="nb" id="n2" onclick="goTab(2)"><i class="ti ti-plus"></i>New Sale</button>
+    <button class="nb" id="n3" onclick="goTab(3)"><i class="ti ti-book"></i>Ledger</button>
+    <button class="nb" id="n4" onclick="goTab(4)"><i class="ti ti-settings"></i>Settings</button>
+  </div>
+</div>
+
+<!-- MODALS -->
+<div id="mPay" class="mbg">
+  <div class="modal">
+    <h3><i class="ti ti-cash"></i> Payment Edit / Add Karo</h3>
+    <div style="font-size:13px;color:#888;margin-bottom:14px;line-height:1.7;" id="pmInfo"></div>
+    <label class="lbl" style="margin-top:0;">Total Bill (₹) — Read Only</label>
+    <input type="number" class="inp" id="pmTot" readonly style="background:#f9faf8;color:#888;"/>
+    <label class="lbl">Abtak Mila (₹) — Edit kar sako</label>
+    <input type="number" class="inp" id="pmAmt" placeholder="0" min="0" inputmode="numeric" oninput="pmCalc()"/>
+    <div id="pmCalcBox" style="background:#0F6E56;border-radius:10px;padding:11px 14px;margin-top:10px;color:#fff;display:none;">
+      <div style="display:flex;justify-content:space-between;font-size:13px;padding:3px 0;"><span>Total Bill</span><span id="pmC1">₹0</span></div>
+      <div style="display:flex;justify-content:space-between;font-size:13px;padding:3px 0;"><span>Ab Milega</span><span id="pmC2">₹0</span></div>
+      <div style="display:flex;justify-content:space-between;font-size:15px;font-weight:800;padding-top:8px;margin-top:6px;border-top:1px solid rgba(255,255,255,.25);"><span id="pmC3lbl">Baki</span><span id="pmC3">₹0</span></div>
+    </div>
+    <div id="pmWarn" style="background:#FAEEDA;color:#633806;border-radius:10px;padding:10px 13px;font-size:12px;margin-top:8px;display:none;"><b>⚠ Overpayment!</b> Amount bill se zyada hai.</div>
+    <div class="m-btns">
+      <button class="m-cancel" onclick="closeM('mPay')">Cancel</button>
+      <button class="m-ok" onclick="confirmPay()">Save</button>
+    </div>
+  </div>
+</div>
+
+<div id="mNewCust" class="mbg">
+  <div class="modal">
+    <h3><i class="ti ti-user-plus"></i> Naya Customer</h3>
+    <label class="lbl" style="margin-top:0;">Shop / Customer Naam *</label>
+    <input type="text" class="inp" id="cName" placeholder="e.g. JAM JAM Store" style="margin-bottom:12px;"/>
+    <label class="lbl">Owner Naam</label>
+    <input type="text" class="inp" id="cOwner" placeholder="e.g. Saqib" style="margin-bottom:12px;"/>
+    <div class="r2">
+      <div><label class="lbl" style="margin-top:0;">Mobile</label><input type="tel" class="inp" id="cMob" placeholder="9876543210" inputmode="numeric"/></div>
+      <div><label class="lbl" style="margin-top:0;">Area</label><input type="text" class="inp" id="cAddr" placeholder="Phulwari"/></div>
+    </div>
+    <div class="m-btns" style="margin-top:14px;">
+      <button class="m-cancel" onclick="closeM('mNewCust')">Cancel</button>
+      <button class="m-ok" onclick="saveCust()">Save</button>
+    </div>
+  </div>
+</div>
+
+<div id="mCustDetail" class="mbg">
+  <div class="modal">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+      <h3 style="margin:0;" id="cdName">Customer</h3>
+      <button onclick="closeM('mCustDetail')" style="background:none;border:none;font-size:26px;cursor:pointer;color:#aaa;padding:0;line-height:1;">&times;</button>
+    </div>
+    <div style="font-size:13px;color:#888;line-height:1.9;margin-bottom:14px;" id="cdInfo"></div>
+    <div class="sec">Transaction History</div>
+    <div id="cdHist"></div>
+    <div style="margin-top:14px;padding-top:12px;border-top:2px solid #f5f5f0;">
+      <div class="kv-row"><span class="kv-lbl">Total Kharidi</span><span style="font-weight:700;color:#0F6E56;" id="cdTot">₹0</span></div>
+      <div class="kv-row"><span class="kv-lbl">Total Mila</span><span style="font-weight:700;color:#0F6E56;" id="cdPaid">₹0</span></div>
+      <div class="kv-row"><span class="kv-lbl">Total Baki</span><span style="font-weight:700;color:#E24B4A;" id="cdDues">₹0</span></div>
+    </div>
+    <div style="display:flex;gap:8px;margin-top:12px;">
+      <button class="btn btn-blue" onclick="dlCustLedger()" style="flex:1;"><i class="ti ti-table-export"></i> CSV</button>
+      <button class="btn btn-green" onclick="dlCustPDF()" style="flex:1;"><i class="ti ti-file-type-pdf"></i> PDF</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<!-- Firebase SDK -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getDatabase, ref, set, onValue, push, remove, update } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+// ===== FIREBASE CONFIG =====
+const firebaseConfig = {
+  apiKey: "AIzaSyDqE_lWwDXkZf3eWubNWPhvy3qBDkt1ZwU",
+  authDomain: "terrafab-organics.firebaseapp.com",
+  databaseURL: "https://terrafab-organics-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "terrafab-organics",
+  storageBucket: "terrafab-organics.firebasestorage.app",
+  messagingSenderId: "624570653277",
+  appId: "1:624570653277:web:b1e0315b54cbbd95ee0bb4"
+};
+
+const app = initializeApp(firebaseConfig);
+const db  = getDatabase(app);
+
+// ===== PASSWORDS (local only, not stored in Firebase) =====
+var USERS = {Hussain:'tf@1234', Subham:'sb@5678'};
+var DEF_GRADES = ['4 Suta','4+ Suta','5 Suta','5+ Suta','6 Suta','Mix'];
+var SIZES = ['100gm','200gm','250gm','500gm','1kg'];
+
+// ===== STATE =====
+var entries   = [];
+var customers = [];
+var grades    = DEF_GRADES.slice();
+var curUser = '', payTarget = null, cdCustId = null, rowCount = 0;
+var fbReady = false;
+
+// ===== HELPERS =====
+function rs(n){ return '₹' + Math.round(Number(n)||0).toLocaleString('en-IN'); }
+
+function toast(msg){
+  var t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('on');
+  setTimeout(function(){ t.classList.remove('on'); }, 2500);
+}
+
+function sdot(state){
+  var d = document.getElementById('sdot');
+  d.className = 'sync-dot ' + state;
+}
+
+function fmtDate(ds){
+  if(!ds) return '-';
+  if(ds.includes('-') && ds.length===10){
+    var p = ds.split('-');
+    return p[2]+'/'+p[1]+'/'+p[0];
+  }
+  return ds;
+}
+
+function openM(id){ document.getElementById(id).classList.add('on'); }
+function closeM(id){ document.getElementById(id).classList.remove('on'); }
+
+function goTab(n){
+  var tabs=['tDash','tCust','tNew','tLed','tSet'];
+  tabs.forEach(function(t,i){
+    document.getElementById(t).classList.toggle('on', i===n);
+    document.getElementById('n'+i).classList.toggle('on', i===n);
+  });
+  if(n===2) initRows();
+  if(n===3) renderLedger();
+}
+
+// ===== LOGIN =====
+window.doLogin = function(){
+  var u = document.getElementById('uSel').value;
+  var p = document.getElementById('pInp').value;
+  var errEl = document.getElementById('lErr');
+  if(!u || !p || USERS[u] !== p){
+    errEl.style.display = 'block';
+    return;
+  }
+  errEl.style.display = 'none';
+  curUser = u;
+  document.getElementById('uLbl').textContent = u;
+  document.getElementById('uAv').textContent  = u.substring(0,2).toUpperCase();
+  document.getElementById('setUser').textContent = u + (u==='Hussain'?' (Owner)':' (Partner)');
+  document.getElementById('sLogin').style.display = 'none';
+  document.getElementById('sMain').style.display  = 'flex';
+  startFirebaseListeners();
+  initRows();
+};
+
+window.doLogout = function(){
+  curUser = '';
+  entries = []; customers = []; grades = DEF_GRADES.slice();
+  document.getElementById('sMain').style.display  = 'none';
+  document.getElementById('sLogin').style.display = 'flex';
+  document.getElementById('pInp').value = '';
+  document.getElementById('uSel').value = '';
+};
+
+// ===== FIREBASE LISTENERS (Real-time) =====
+function startFirebaseListeners(){
+  sdot('busy');
+
+  // Listen to entries
+  onValue(ref(db, 'entries'), function(snap){
+    var data = snap.val();
+    entries = data ? Object.values(data) : [];
+    renderAll(); renderCusts(); fillCustDropdown(); renderLedger();
+    sdot('ok');
+    fbReady = true;
+    document.getElementById('syncStat').textContent = 'Live ✓';
+    document.getElementById('syncStat').style.color = '#0F6E56';
+    document.getElementById('syncTime').textContent = new Date().toLocaleTimeString('en-IN');
+    var banner = document.getElementById('fbBanner');
+    banner.innerHTML = '<i class="ti ti-wifi" style="font-size:16px;"></i> Firebase Live — dono partners ka data real-time sync ho raha hai ✓';
+    banner.classList.remove('err');
+  }, function(err){
+    sdot('err');
+    document.getElementById('syncStat').textContent = 'Error';
+    var banner = document.getElementById('fbBanner');
+    banner.innerHTML = '<i class="ti ti-wifi-off" style="font-size:16px;"></i> Firebase connect nahi hua. Internet check karo.';
+    banner.classList.add('err');
+  });
+
+  // Listen to customers
+  onValue(ref(db, 'customers'), function(snap){
+    var data = snap.val();
+    customers = data ? Object.values(data) : [];
+    renderCusts(); fillCustDropdown();
+  });
+
+  // Listen to grades
+  onValue(ref(db, 'grades'), function(snap){
+    var data = snap.val();
+    if(data && Array.isArray(data)) grades = data;
+    else if(data) grades = Object.values(data);
+    renderGrades();
+  });
+}
+
+// ===== SAVE TO FIREBASE =====
+function fbSetEntries(){
+  var obj = {};
+  entries.forEach(function(e){ obj['e_'+e.id] = e; });
+  set(ref(db, 'entries'), obj).catch(function(){ toast('⚠ Save error!'); });
+}
+
+function fbSetCustomers(){
+  var obj = {};
+  customers.forEach(function(c){ obj['c_'+c.id] = c; });
+  set(ref(db, 'customers'), obj).catch(function(){ toast('⚠ Customer save error!'); });
+}
+
+function fbSetGrades(){
+  set(ref(db, 'grades'), grades).catch(function(){ toast('⚠ Grade save error!'); });
+}
+
+// ===== CUSTOMER FUNCTIONS =====
+function onCustSel(){
+  var cid = parseInt(document.getElementById('fCust').value);
+  var box = document.getElementById('custInfoBox');
+  if(!cid){ box.style.display='none'; document.getElementById('fShop').value=''; return; }
+  var c = customers.find(function(x){ return x.id===cid; });
+  if(!c){ box.style.display='none'; return; }
+  document.getElementById('fShop').value = c.name;
+  document.getElementById('fOwner').value = c.owner||'';
+  document.getElementById('fMob').value = c.mob||'';
+  var baki = entries.filter(function(e){ return e.custId===cid; }).reduce(function(s,e){ return s+(Number(e.dues)||0); }, 0);
+  var khar = entries.filter(function(e){ return e.custId===cid; }).reduce(function(s,e){ return s+(Number(e.tot)||0); }, 0);
+  box.style.display = 'block';
+  box.innerHTML = '<b>'+c.name+'</b>'+(c.mob?' • '+c.mob:'')+(c.addr?' • '+c.addr:'')
+    +'<br>Total Kharidi: '+rs(khar)+(baki>0?' &nbsp;<b style="color:#E24B4A">Baki: '+rs(baki)+'</b>':' &nbsp;<b style="color:#0F6E56">Clear ✓</b>');
+}
+window.onCustSel = onCustSel;
+
+function fillCustDropdown(){
+  var sel = document.getElementById('fCust');
+  var cur = sel.value;
+  sel.innerHTML = '<option value="">-- Select karo --</option>';
+  customers.slice().sort(function(a,b){ return a.name.localeCompare(b.name); }).forEach(function(c){
+    sel.innerHTML += '<option value="'+c.id+'">'+c.name+(c.mob?' ('+c.mob+')':'')+'</option>';
+  });
+  if(cur) sel.value = cur;
+}
+
+function renderCusts(){
+  var q   = (document.getElementById('custSrch').value||'').toLowerCase();
+  var list = customers.filter(function(c){ return !q || c.name.toLowerCase().includes(q)||(c.mob||'').includes(q); });
+  var el  = document.getElementById('custList');
+  if(!list.length){ el.innerHTML='<div class="empty">Koi customer nahi.</div>'; return; }
+  el.innerHTML = list.map(function(c){
+    var baki = entries.filter(function(e){ return e.custId===c.id; }).reduce(function(s,e){ return s+(Number(e.dues)||0); }, 0);
+    return '<div class="cust-row" onclick="openCustDetail('+c.id+')">'
+      +'<div class="cust-av">'+c.name.substring(0,2).toUpperCase()+'</div>'
+      +'<div style="flex:1;"><div class="cust-name">'+c.name+'</div><div class="cust-meta">'+(c.mob||'No mobile')+(c.addr?' • '+c.addr:'')+'</div></div>'
+      +'<div style="text-align:right;">'+(baki>0?'<div style="font-size:13px;font-weight:700;color:#E24B4A;">'+rs(baki)+'</div><div style="font-size:10px;color:#aaa;">Baki</div>':'<div style="font-size:12px;color:#0F6E56;font-weight:700;">Clear ✓</div>')+'</div></div>';
+  }).join('');
+}
+window.renderCusts = renderCusts;
+
+window.saveCust = function(){
+  var name = document.getElementById('cName').value.trim();
+  if(!name){ alert('Shop naam daalo!'); return; }
+  var id = Date.now();
+  var c = {id:id, name:name, owner:document.getElementById('cOwner').value.trim(), mob:document.getElementById('cMob').value.trim(), addr:document.getElementById('cAddr').value.trim(), createdAt:new Date().toLocaleDateString('en-IN')};
+  customers.push(c);
+  fbSetCustomers();
+  document.getElementById('cName').value=''; document.getElementById('cOwner').value=''; document.getElementById('cMob').value=''; document.getElementById('cAddr').value='';
+  closeM('mNewCust');
+  toast('Customer save ho gaya!');
+};
+
+window.openCustDetail = function(cid){
+  var c = customers.find(function(x){ return x.id===cid; });
+  if(!c) return;
+  cdCustId = cid;
+  document.getElementById('cdName').textContent = c.name;
+  document.getElementById('cdInfo').innerHTML = (c.owner?'<b>Owner:</b> '+c.owner+'<br>':'')+(c.mob?'<b>Mobile:</b> '+c.mob+'<br>':'')+(c.addr?'<b>Area:</b> '+c.addr+'<br>':'')+'<b>Since:</b> '+(c.createdAt||'-');
+  var ce  = entries.filter(function(e){ return e.custId===cid; });
+  var tot  = ce.reduce(function(s,e){ return s+(Number(e.tot)||0); }, 0);
+  var paid = ce.reduce(function(s,e){ return s+(Number(e.pay)||0); }, 0);
+  var dues = ce.reduce(function(s,e){ return s+(Number(e.dues)||0); }, 0);
+  document.getElementById('cdTot').textContent  = rs(tot);
+  document.getElementById('cdPaid').textContent = rs(paid);
+  document.getElementById('cdDues').textContent = rs(dues);
+  document.getElementById('cdHist').innerHTML = ce.length
+    ? ce.slice().reverse().map(function(e){
+        return '<div class="h-item"><div class="h-date">'+fmtDate(e.date)+' &nbsp;<span class="badge b-'+e.status+'">'+(e.status==='paid'?'Paid':e.status==='partial'?'Partial':'Unpaid')+'</span></div>'
+          +'<div style="font-size:13px;"><b>Sale:</b> '+rs(e.tot)+' &nbsp; <b>Mila:</b> '+rs(e.pay)+' &nbsp; <b>Baki:</b> <span style="color:'+(e.dues>0?'#E24B4A':'#0F6E56')+'">'+rs(e.dues)+'</span></div></div>';
+      }).join('')
+    : '<div class="empty">Koi transaction nahi.</div>';
+  openM('mCustDetail');
+};
+
+// ===== NEW SALE FORM =====
+function initRows(){
+  rowCount = 0;
+  document.getElementById('iCont').innerHTML = '';
+  addRow();
+  document.getElementById('fCust').value  = '';
+  document.getElementById('fShop').value  = '';
+  document.getElementById('fOwner').value = '';
+  document.getElementById('fMob').value   = '';
+  document.getElementById('fPay').value   = '';
+  document.getElementById('custInfoBox').style.display = 'none';
+  document.getElementById('calcBox').style.display     = 'none';
+  var d = new Date();
+  document.getElementById('fDate').value = d.getFullYear()+'-'+(String(d.getMonth()+1).padStart(2,'0'))+'-'+(String(d.getDate()).padStart(2,'0'));
+}
+
+window.addRow = function(){
+  rowCount++;
+  var id = rowCount;
+  var gOpts = grades.map(function(g){ return '<option value="'+g+'">'+g+'</option>'; }).join('');
+  var sOpts = SIZES.map(function(s){ return '<option value="'+s+'">'+s+'</option>'; }).join('');
+  var div = document.createElement('div');
+  div.className = 'item-block'; div.id = 'row'+id;
+  div.innerHTML = '<div class="item-head"><span>Item '+id+'</span>'+(id>1?'<button class="rbtn" onclick="removeRow('+id+')"><i class="ti ti-x"></i> Hata</button>':'')+'</div>'
+    +'<div class="r2"><div><label class="lbl" style="margin-top:0;">Grade</label><select class="inp" id="rg'+id+'" style="font-size:13px;" onchange="updateCalc()">'+gOpts+'</select></div>'
+    +'<div><label class="lbl" style="margin-top:0;">Size</label><select class="inp" id="rs'+id+'" style="font-size:13px;" onchange="updateCalc()">'+sOpts+'</select></div></div>'
+    +'<div class="r3" style="margin-top:8px;"><div><label class="lbl" style="margin-top:0;">Packets</label><input type="number" class="inp" id="rp'+id+'" placeholder="0" min="0" inputmode="numeric" style="font-size:13px;" oninput="updateCalc()"/></div>'
+    +'<div><label class="lbl" style="margin-top:0;">Rate/Pkt(₹)</label><input type="number" class="inp" id="rr'+id+'" placeholder="0" min="0" inputmode="numeric" style="font-size:13px;" oninput="updateCalc()"/></div>'
+    +'<div><label class="lbl" style="margin-top:0;">Amount</label><input type="text" class="inp" id="ra'+id+'" readonly style="font-size:13px;background:#f9faf8;"/></div></div>'
+    +'<div class="r3" style="margin-top:6px;"><div><label class="lbl" style="margin-top:0;">Khula (kg)</label><input type="number" class="inp" id="rk'+id+'" placeholder="0" min="0" inputmode="decimal" style="font-size:13px;" oninput="updateCalc()"/></div>'
+    +'<div><label class="lbl" style="margin-top:0;">Rate/kg(₹)</label><input type="number" class="inp" id="rkr'+id+'" placeholder="0" min="0" inputmode="numeric" style="font-size:13px;" oninput="updateCalc()"/></div>'
+    +'<div><label class="lbl" style="margin-top:0;">Amount</label><input type="text" class="inp" id="rka'+id+'" readonly style="font-size:13px;background:#f9faf8;"/></div></div>';
+  document.getElementById('iCont').appendChild(div);
+  updateCalc();
+};
+
+window.removeRow = function(id){
+  var el = document.getElementById('row'+id);
+  if(el) el.remove();
+  updateCalc();
+};
+
+function getRowIds(){
+  return Array.from(document.querySelectorAll('#iCont .item-block')).map(function(r){ return r.id.replace('row',''); });
+}
+
+window.updateCalc = function(){
+  var ids = getRowIds(); var grandTotal = 0;
+  ids.forEach(function(id){
+    var p  = parseFloat((document.getElementById('rp'+id)||{}).value)  || 0;
+    var r  = parseFloat((document.getElementById('rr'+id)||{}).value)  || 0;
+    var k  = parseFloat((document.getElementById('rk'+id)||{}).value)  || 0;
+    var kr = parseFloat((document.getElementById('rkr'+id)||{}).value) || 0;
+    var pA = p*r, kA = k*kr;
+    var era = document.getElementById('ra'+id), erka = document.getElementById('rka'+id);
+    if(era)  era.value  = pA>0  ? '₹'+Math.round(pA)  : '';
+    if(erka) erka.value = kA>0  ? '₹'+Math.round(kA)  : '';
+    grandTotal += pA + kA;
+  });
+  var pay = parseFloat(document.getElementById('fPay').value)||0;
+  var due = grandTotal - pay;
+  var box = document.getElementById('calcBox');
+  if(grandTotal>0||pay>0){
+    box.style.display='block';
+    document.getElementById('calcSale').textContent = rs(grandTotal);
+    document.getElementById('calcPay').textContent  = rs(pay);
+    document.getElementById('calcDue').textContent  = rs(due<0?0:due);
+  } else { box.style.display='none'; }
+};
+
+window.saveEntry = function(){
+  var shop = document.getElementById('fShop').value.trim();
+  if(!shop){ alert('Shop naam daalo!'); return; }
+  var ids = getRowIds(); var items = []; var tot = 0;
+  ids.forEach(function(id){
+    var g  = (document.getElementById('rg'+id)||{}).value||'';
+    var sz = (document.getElementById('rs'+id)||{}).value||'';
+    var p  = parseFloat((document.getElementById('rp'+id)||{}).value)||0;
+    var r  = parseFloat((document.getElementById('rr'+id)||{}).value)||0;
+    var k  = parseFloat((document.getElementById('rk'+id)||{}).value)||0;
+    var kr = parseFloat((document.getElementById('rkr'+id)||{}).value)||0;
+    var pA = p*r, kA = k*kr;
+    if(p>0||k>0){ items.push({grade:g,size:sz,p:p,r:r,pA:pA,k:k,kr:kr,kA:kA,total:pA+kA}); tot+=pA+kA; }
+  });
+  if(!items.length){ alert('Kam se kam ek item add karo!'); return; }
+  var pay   = Math.max(0, parseFloat(document.getElementById('fPay').value)||0);
+  var dues  = Math.max(0, tot-pay);
+  var status = dues<=0?'paid':pay<=0?'unpaid':'partial';
+  var custId = parseInt(document.getElementById('fCust').value)||null;
+  if(!custId && shop){
+    var existing = customers.find(function(c){ return c.name.toLowerCase()===shop.toLowerCase(); });
+    if(existing){ custId=existing.id; }
+    else{
+      custId = Date.now();
+      customers.push({id:custId,name:shop,owner:document.getElementById('fOwner').value.trim(),mob:document.getElementById('fMob').value.trim(),addr:'',createdAt:new Date().toLocaleDateString('en-IN')});
+      fbSetCustomers();
+    }
+  }
+  var dateVal = document.getElementById('fDate').value || new Date().toLocaleDateString('en-IN');
+  var entry = {id:Date.now()+Math.floor(Math.random()*1000),shop:shop,owner:document.getElementById('fOwner').value.trim(),mob:document.getElementById('fMob').value.trim(),custId:custId,date:dateVal,items:items,tot:tot,pay:pay,dues:dues,status:status,addedBy:curUser};
+  entries.push(entry);
+  fbSetEntries();
+  toast('Entry save ho gaya! Sale: '+rs(tot)+' | Mila: '+rs(pay)+' | Baki: '+rs(dues));
+  goTab(3);
+};
+
+// ===== PAYMENT =====
+window.openPay = function(id){
+  payTarget = id;
+  var e = entries.find(function(x){ return x.id===id; });
+  if(!e) return;
+  document.getElementById('pmInfo').innerHTML = '<b>'+e.shop+'</b>'+(e.owner?' ('+e.owner+')':'')+'<br>Date: '+fmtDate(e.date)+'<br>Total Bill: <b>'+rs(e.tot)+'</b>';
+  document.getElementById('pmTot').value = Math.round(Number(e.tot)||0);
+  document.getElementById('pmAmt').value = Math.round(Number(e.pay)||0);
+  document.getElementById('pmWarn').style.display = 'none';
+  pmCalc(); openM('mPay');
+};
+
+window.pmCalc = function(){
+  var tot = parseFloat(document.getElementById('pmTot').value)||0;
+  var amt = parseFloat(document.getElementById('pmAmt').value)||0;
+  var baki = tot-amt;
+  document.getElementById('pmCalcBox').style.display='block';
+  document.getElementById('pmC1').textContent = rs(tot);
+  document.getElementById('pmC2').textContent = rs(amt);
+  document.getElementById('pmC3').textContent = rs(Math.abs(baki));
+  document.getElementById('pmC3lbl').textContent = baki<0?'Advance (Extra)':'Baki';
+  document.getElementById('pmWarn').style.display = baki<0?'block':'none';
+};
+
+window.confirmPay = function(){
+  if(!payTarget) return;
+  var amt = parseFloat(document.getElementById('pmAmt').value);
+  if(isNaN(amt)||amt<0){ alert('Sahi amount daalo!'); return; }
+  var tot = parseFloat(document.getElementById('pmTot').value)||0;
+  if(amt>tot && !confirm('Amount bill se zyada hai. Extra advance maana jaayega. Continue?')) return;
+  var idx = entries.findIndex(function(x){ return x.id===payTarget; });
+  if(idx===-1) return;
+  entries[idx].pay    = amt;
+  entries[idx].dues   = Math.max(0,(Number(entries[idx].tot)||0)-amt);
+  entries[idx].status = entries[idx].dues<=0?'paid':amt<=0?'unpaid':'partial';
+  entries[idx].lastPayBy = curUser;
+  entries[idx].lastPayAt = new Date().toISOString();
+  fbSetEntries();
+  closeM('mPay');
+  toast('Payment update ho gaya! Baki: '+rs(entries[idx].dues));
+  payTarget = null;
+};
+
+// ===== DELETE =====
+window.delEntry = function(id){
+  var e = entries.find(function(x){ return x.id===id; });
+  if(!e) return;
+  if(!confirm(e.shop+' ki entry delete karna hai?\nSale: '+rs(e.tot)+'\nDate: '+fmtDate(e.date))) return;
+  entries = entries.filter(function(x){ return x.id!==id; });
+  fbSetEntries();
+  toast('Entry delete ho gaya!');
+};
+
+// ===== DASHBOARD =====
+function renderAll(){
+  var tot=0, pay=0, dues=0;
+  entries.forEach(function(e){ tot+=Number(e.tot)||0; pay+=Number(e.pay)||0; dues+=Number(e.dues)||0; });
+  var pct = tot>0?Math.round(pay/tot*100):0;
+  var dueCount = entries.filter(function(e){ return (Number(e.dues)||0)>0; }).length;
+  document.getElementById('mS').textContent    = rs(tot);
+  document.getElementById('mR').textContent    = rs(pay);
+  document.getElementById('mD').textContent    = rs(dues);
+  document.getElementById('mP').textContent    = pct+'%';
+  document.getElementById('mSSub').textContent = entries.length+' entries';
+  document.getElementById('mDSub').textContent = dueCount+' dealers';
+  document.getElementById('plS').textContent   = rs(tot);
+  document.getElementById('plR').textContent   = rs(pay);
+  document.getElementById('plD').textContent   = rs(dues);
+  document.getElementById('plN').textContent   = rs(pay);
+  var gMap = {};
+  entries.forEach(function(e){ (e.items||[]).forEach(function(it){ gMap[it.grade]=(gMap[it.grade]||0)+(Number(it.total)||0); }); });
+  var gKeys = Object.keys(gMap);
+  var gMax  = Math.max.apply(null,gKeys.map(function(k){ return gMap[k]; }).concat([1]));
+  document.getElementById('gBars').innerHTML = gKeys.length
+    ? gKeys.sort(function(a,b){ return gMap[b]-gMap[a]; }).map(function(g){
+        var p2=Math.round(gMap[g]/gMax*100);
+        return '<div class="gbar-row"><span class="gbar-lbl">'+g+'</span><div class="gbar-track"><div class="gbar-fill" style="width:'+p2+'%"></div></div><span class="gbar-pct">'+rs(gMap[g])+'</span></div>';
+      }).join('')
+    : '<div class="empty">Koi data nahi.</div>';
+  var dueEntries = entries.filter(function(e){ return (Number(e.dues)||0)>0; }).sort(function(a,b){ return (Number(b.dues)||0)-(Number(a.dues)||0); });
+  document.getElementById('dashDues').innerHTML = dueEntries.length
+    ? dueEntries.map(function(e){
+        return '<div class="alert-row"><div class="alert-ico"><i class="ti ti-alert-circle"></i></div>'
+          +'<div style="flex:1;"><div style="font-size:14px;font-weight:700;">'+e.shop+(e.owner?' ('+e.owner+')':'')+'</div>'
+          +'<div style="font-size:12px;color:#aaa;margin-top:2px;">Baki: <b style="color:#E24B4A">'+rs(e.dues)+'</b> &nbsp;•&nbsp; '+fmtDate(e.date)+'</div>'
+          +(e.mob?'<div style="font-size:12px;color:#0F6E56;margin-top:2px;"><i class="ti ti-phone"></i> '+e.mob+'</div>':'')
+          +'<button class="ab ab-green" style="margin-top:6px;" onclick="openPay('+e.id+')"><i class="ti ti-cash"></i> Payment Add</button>'
+          +'</div></div>';
+      }).join('')
+    : '<div class="empty">Koi dues nahi! Sab clear. ✓</div>';
+}
+
+// ===== LEDGER =====
+function renderLedger(){
+  var q    = (document.getElementById('ledSrch').value||'').toLowerCase();
+  var list = entries.filter(function(e){ return !q||e.shop.toLowerCase().includes(q)||(e.owner||'').toLowerCase().includes(q); }).slice().reverse();
+  var el = document.getElementById('ledList');
+  if(!list.length){ el.innerHTML='<div class="empty">Koi entry nahi.</div>'; return; }
+  el.innerHTML = list.map(function(e){
+    var hasCust = customers.some(function(c){ return c.id===e.custId; });
+    return '<div class="led-row">'
+      +'<div class="led-av">'+e.shop.substring(0,2).toUpperCase()+'</div>'
+      +'<div class="led-info"><div class="led-name">'+e.shop+(e.owner?' <span style="font-weight:400;font-size:12px;color:#aaa;">('+e.owner+')</span>':'')+'</div>'
+      +'<div class="led-meta">'+fmtDate(e.date)+(e.addedBy?' • '+e.addedBy:'')+'</div>'
+      +'<div class="led-tags">'+(e.items||[]).map(function(it){
+          var parts=[];
+          if((it.p||0)>0) parts.push(it.grade+(it.size?' '+it.size:'')+' × '+it.p+' pkt = '+rs(it.pA||0));
+          if((it.k||0)>0) parts.push(it.grade+' Khula '+it.k+'kg = '+rs(it.kA||0));
+          return parts.map(function(pt){ return '<span class="itag">'+pt+'</span>'; }).join('');
+        }).join('')+'</div>'
+      +'<span class="badge b-'+e.status+'" style="margin-top:5px;display:inline-block;">'+(e.status==='paid'?'Paid':e.status==='partial'?'Partial':'Unpaid')+'</span>'
+      +'<div class="led-btns">'
+      +((Number(e.dues)||0)>0?'<button class="ab ab-green" onclick="openPay('+e.id+')"><i class="ti ti-cash"></i> Payment</button>':'')
+      +(hasCust?'<button class="ab ab-purple" onclick="openCustDetail('+e.custId+')"><i class="ti ti-user"></i> Profile</button>':'')
+      +'<button class="ab ab-red" onclick="delEntry('+e.id+')"><i class="ti ti-trash"></i></button>'
+      +'</div></div>'
+      +'<div class="led-amt"><div class="led-total">'+rs(e.tot)+'</div>'
+      +'<div style="font-size:11px;color:#0F6E56;font-weight:600;">Mila: '+rs(e.pay)+'</div>'
+      +((Number(e.dues)||0)>0?'<div class="led-due">Baki: '+rs(e.dues)+'</div>':'<div style="font-size:11px;color:#0F6E56;font-weight:600;">Clear ✓</div>')
+      +'</div></div>';
+  }).join('');
+}
+window.renderLedger = renderLedger;
+
+// ===== GRADES =====
+function renderGrades(){
+  var el = document.getElementById('gradeList');
+  el.innerHTML = grades.length
+    ? grades.map(function(g,i){
+        return '<div class="irow"><span>'+g+'</span><button class="rbtn" onclick="delGrade('+i+')"><i class="ti ti-trash"></i> Hata</button></div>';
+      }).join('')
+    : '<div class="empty">Koi grade nahi.</div>';
+}
+
+window.addGrade = function(){
+  var v = document.getElementById('newGrade').value.trim();
+  if(!v){ alert('Grade naam daalo!'); return; }
+  if(grades.indexOf(v)>=0){ alert('Ye grade already hai!'); return; }
+  grades.push(v); fbSetGrades();
+  document.getElementById('newGrade').value='';
+  toast('Grade add ho gaya!');
+};
+
+window.delGrade = function(i){
+  if(!confirm(grades[i]+' grade delete karna hai?')) return;
+  grades.splice(i,1); fbSetGrades();
+};
+
+// ===== CLEAR DATA =====
+window.clearData = function(){
+  if(!confirm('SACH MEIN sabka data delete karna hai? Ye wapas nahi aayega!')) return;
+  if(!confirm('Ek baar aur confirm karo — POORA DATA DELETE HOGA!')) return;
+  entries=[]; customers=[]; grades=DEF_GRADES.slice();
+  fbSetEntries(); fbSetCustomers(); fbSetGrades();
+  toast('Sab data delete ho gaya!');
+};
+
+// ===== CSV EXPORT =====
+window.exportCSV = function(){
+  var rows = [['Date','Shop','Owner','Mobile','Grade','Packets','Rate/Pkt','Pkt Amount','Khula kg','Khula Rate','Khula Amount','Total Sale','Payment Mila','Baki','Status','Added By']];
+  entries.forEach(function(e){
+    (e.items||[]).forEach(function(it,idx){
+      rows.push([fmtDate(e.date),e.shop,e.owner||'',e.mob||'',it.grade,it.p||0,it.r||0,Math.round(it.pA||0),it.k||0,it.kr||0,Math.round(it.kA||0),idx===0?Math.round(e.tot):'',idx===0?Math.round(e.pay):'',idx===0?Math.round(e.dues):'',idx===0?e.status:'',e.addedBy||'']);
+    });
+  });
+  dlCSV(rows,'Terrafab_Export_'+new Date().toLocaleDateString('en-IN').replace(/\//g,'-')+'.csv');
+};
+
+window.dlCustLedger = function(){
+  if(!cdCustId) return;
+  var c  = customers.find(function(x){ return x.id===cdCustId; });
+  var ce = entries.filter(function(e){ return e.custId===cdCustId; });
+  var rows = [['Date','Shop','Grade','Packets','Rate','Pkt Amount','Khula kg','Khula Rate','Khula Amount','Total Sale','Mila','Baki','Status']];
+  ce.forEach(function(e){ (e.items||[]).forEach(function(it,idx){ rows.push([fmtDate(e.date),e.shop,it.grade,it.p||0,it.r||0,Math.round(it.pA||0),it.k||0,it.kr||0,Math.round(it.kA||0),idx===0?Math.round(e.tot):'',idx===0?Math.round(e.pay):'',idx===0?Math.round(e.dues):'',idx===0?e.status:'']); }); });
+  dlCSV(rows,'Terrafab_'+((c&&c.name)||'Customer')+'_Ledger.csv');
+};
+
+function dlCSV(rows, filename){
+  var csv = rows.map(function(r){ return r.map(function(v){ return '"'+(String(v||'').replace(/"/g,'""'))+'"'; }).join(','); }).join('\n');
+  var blob = new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8'});
+  var a = document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=filename; a.click(); URL.revokeObjectURL(a.href);
+  toast('CSV download ho gaya!');
+}
+
+// ===== PDF =====
+function buildPDFHTML(title, entriesList, summaryHTML){
+  var tot=entriesList.reduce(function(s,e){ return s+(Number(e.tot)||0); },0);
+  var pay=entriesList.reduce(function(s,e){ return s+(Number(e.pay)||0); },0);
+  var dues=entriesList.reduce(function(s,e){ return s+(Number(e.dues)||0); },0);
+  var rows=entriesList.slice().reverse().map(function(e){
+    var itemsStr=(e.items||[]).map(function(it){ var pts=[]; if(it.p>0) pts.push(it.grade+' '+it.size+': '+it.p+' pkt × ₹'+it.r+' = ₹'+Math.round(it.pA)); if(it.k>0) pts.push(it.grade+' Khula: '+it.k+'kg × ₹'+it.kr+' = ₹'+Math.round(it.kA)); return pts.join(', '); }).join('<br>');
+    var sColor=e.status==='paid'?'#085041':e.status==='partial'?'#633806':'#501313';
+    var sBg=e.status==='paid'?'#E1F5EE':e.status==='partial'?'#FAEEDA':'#FCEBEB';
+    return '<tr><td>'+fmtDate(e.date)+'</td><td><b>'+e.shop+'</b>'+(e.owner?'<br><span style="color:#888;font-size:11px;">'+e.owner+'</span>':'')+(e.mob?'<br><span style="color:#888;font-size:11px;">'+e.mob+'</span>':'')+'</td><td style="font-size:11px;">'+itemsStr+'</td><td style="text-align:right;font-weight:700;">₹'+Math.round(e.tot)+'</td><td style="text-align:right;color:#0F6E56;font-weight:600;">₹'+Math.round(e.pay)+'</td><td style="text-align:right;color:'+(e.dues>0?'#E24B4A':'#0F6E56')+';font-weight:600;">₹'+Math.round(e.dues)+'</td><td style="text-align:center;"><span style="background:'+sBg+';color:'+sColor+';padding:2px 8px;border-radius:99px;font-size:11px;font-weight:700;">'+(e.status==='paid'?'Paid':e.status==='partial'?'Partial':'Unpaid')+'</span></td></tr>';
+  }).join('');
+  return '<!DOCTYPE html><html><head><meta charset="UTF-8"/><style>body{font-family:Arial,sans-serif;font-size:13px;color:#1a1a1a;margin:0;padding:24px;}h1{font-size:22px;color:#0F6E56;margin:0 0 2px;}h2{font-size:13px;color:#888;font-weight:400;margin:0 0 18px;}.summary{display:flex;gap:16px;margin-bottom:20px;flex-wrap:wrap;}.sbox{background:#f0f4f2;border-radius:10px;padding:12px 16px;min-width:120px;}.sbox .sl{font-size:11px;color:#888;margin-bottom:3px;}.sbox .sv{font-size:18px;font-weight:700;}table{width:100%;border-collapse:collapse;font-size:12px;}th{background:#0F6E56;color:#fff;padding:8px 10px;text-align:left;font-size:11px;}td{padding:8px 10px;border-bottom:1px solid #f0f0ec;vertical-align:top;}tr:last-child td{border-bottom:none;}.footer{margin-top:24px;font-size:11px;color:#aaa;text-align:center;border-top:1px solid #eee;padding-top:12px;}@media print{body{padding:12px;}}</style></head><body>'
+    +'<h1>Terrafab Organics</h1><h2>'+title+' &nbsp;•&nbsp; Generated: '+new Date().toLocaleString('en-IN')+'</h2>'
+    +'<div class="summary"><div class="sbox"><div class="sl">Total Sale</div><div class="sv" style="color:#0F6E56;">₹'+Math.round(tot).toLocaleString('en-IN')+'</div></div>'
+    +'<div class="sbox"><div class="sl">Payment Mila</div><div class="sv" style="color:#0F6E56;">₹'+Math.round(pay).toLocaleString('en-IN')+'</div></div>'
+    +'<div class="sbox"><div class="sl">Baki / Dues</div><div class="sv" style="color:'+(dues>0?'#E24B4A':'#0F6E56')+';">₹'+Math.round(dues).toLocaleString('en-IN')+'</div></div>'
+    +'<div class="sbox"><div class="sl">Entries</div><div class="sv">'+entriesList.length+'</div></div></div>'
+    +(summaryHTML||'')
+    +'<table><thead><tr><th>Date</th><th>Shop / Owner</th><th>Items</th><th>Total Sale</th><th>Mila</th><th>Baki</th><th>Status</th></tr></thead><tbody>'+rows+'</tbody></table>'
+    +'<div class="footer">Terrafab Organics &nbsp;•&nbsp; terrafaborganics.com &nbsp;•&nbsp; This is a system-generated ledger.</div></body></html>';
+}
+
+window.exportPDF = function(){
+  if(!entries.length){ alert('Koi entry nahi!'); return; }
+  var q=(document.getElementById('ledSrch').value||'').toLowerCase();
+  var list=q?entries.filter(function(e){ return e.shop.toLowerCase().includes(q)||(e.owner||'').toLowerCase().includes(q); }):entries;
+  var html=buildPDFHTML('Full Ledger Export',list,'');
+  var w=window.open('','_blank');
+  if(!w){ alert('Popup blocked!'); return; }
+  w.document.write(html); w.document.close(); w.focus();
+  setTimeout(function(){ w.print(); },600);
+  toast('PDF print window khul gaya!');
+};
+
+window.dlCustPDF = function(){
+  if(!cdCustId) return;
+  var c=customers.find(function(x){ return x.id===cdCustId; });
+  var ce=entries.filter(function(e){ return e.custId===cdCustId; });
+  if(!ce.length){ alert('Koi entry nahi!'); return; }
+  var custInfo=c?('<div style="background:#f0f4f2;border-radius:10px;padding:12px 16px;margin-bottom:18px;font-size:13px;"><b style="font-size:15px;">'+c.name+'</b>'+(c.owner?'<br>Owner: '+c.owner:'')+(c.mob?'<br>Mobile: '+c.mob:'')+(c.addr?'<br>Area: '+c.addr:'')+'</div>'):'';
+  var html=buildPDFHTML((c?c.name:'Customer')+' — Ledger',ce,custInfo);
+  var w=window.open('','_blank');
+  if(!w){ alert('Popup blocked!'); return; }
+  w.document.write(html); w.document.close(); w.focus();
+  setTimeout(function(){ w.print(); },600);
+  toast('PDF print window khul gaya!');
+};
+
+// ===== INIT =====
+(function(){
+  var d=new Date();
+  var df=document.getElementById('fDate');
+  if(df) df.value=d.getFullYear()+'-'+(String(d.getMonth()+1).padStart(2,'0'))+'-'+(String(d.getDate()).padStart(2,'0'));
+})();
+
+</script>
+</body>
+</html>
